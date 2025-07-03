@@ -1,9 +1,22 @@
 body {
     margin: 0;
     font-family: 'Exo', sans-serif;
-    background: radial-gradient(circle, #1f1f1f, #0f0f0f);
-    color: #f1f5f9;
+    background:
+        /* Animated glowing dots (digital starfield) */
+        radial-gradient(circle at 20% 30%, rgba(14,165,233,0.18) 0 2px, transparent 40px),
+        radial-gradient(circle at 70% 80%, rgba(56,189,248,0.15) 0 2px, transparent 50px),
+        radial-gradient(circle at 60% 20%, rgba(14,165,233,0.12) 0 1.5px, transparent 30px),
+        repeating-linear-gradient(135deg, rgba(30,41,59,0.25) 0 2px, transparent 2px 40px),
+        linear-gradient(120deg, #0a0f1a 0%, #101826 60%, #1e293b 100%);
+    background-size: 400px 400px, 600px 600px, 300px 300px, 80px 80px, cover;
+    background-attachment: fixed;
+    color: #fff;
+    animation: starfieldMove 60s linear infinite;
+}
 
+@keyframes starfieldMove {
+    0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+    100% { background-position: 400px 800px, 600px 1200px, 300px 600px, 80px 160px, 0 0; }
 }
 
 nav {
@@ -29,7 +42,7 @@ nav ul {
 
 nav ul li a {
     text-decoration: none;
-    color: #38bdf8;
+    color: #fafafa;
     transition: all 0.3s ease;
 }
 
@@ -55,7 +68,7 @@ nav ul li a:hover {
 
 .about, .projects, .contact, .CV {
     padding: 2rem;
-    background: #0f172a;
+    /* background: #0f172a; */
 }
 
 .project, form {
@@ -101,17 +114,22 @@ footer {
 }
 /* --- Footer Social Icons --- */
 .footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+    flex-wrap: wrap;
     text-align: center;
     padding: 10px 0;
   }
   
   .footer-socials a {
-    /* display: inline-block;
-    text-decoration: none;
-    text-align: center; */
+    /* display: inline-block; */
+    text-align: center; 
     margin: 0 12px;
+    text-decoration: none;
     font-size: 24px;
-    color: #38bdf8;
+    color: #0ea5e9;
     transition: transform 0.3s, text-shadow 0.3s;
   }
   
@@ -132,3 +150,221 @@ footer {
   .footer-socials .fa-linkedin  { color: #0077b5; }
   .footer-socials .fa-github    { color: #333; }
   .footer-socials .fa-twitter   { color: #1DA1F2; }
+
+  .hamburger {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    /* background-color: #101826; */
+    width: 100%;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+}
+
+.hamburger i {
+  transition: transform 0.3s ease;
+}
+
+/* === Sidebar styles integrated on 2025‑07‑02 === */
+#hamburger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2196f3;
+  color: #000;
+  border: none;
+  font-size: 30px;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  transition: right 0.3s;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+#closeBtn {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 30px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  gap: 20px;
+  padding-left: 30px;
+  background: transparent; /* override old nav background */
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  color: #2196f3;
+  font-size: 20px;
+}
+
+
+
+/* === Updated Sidebar styles === */
+#hamburger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2196f3;
+  color: #000;
+  border: none;
+  font-size: 30px;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -180px;
+  width: 180px;
+  height: auto;
+  background: #fff;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  transition: right 0.3s;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  border-bottom-left-radius: 10px;
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+#closeBtn {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 25px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 20px 20px;
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  color: #2196f3;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* New navbar styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.6);
+}
+.navbar .logo {
+  color: #00bfff;
+  font-size: 1.5em;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+.nav-links li {
+  margin-left: 20px;
+}
+.nav-links a {
+  color: #00bfff;
+  text-decoration: none;
+}
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: #00bfff;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+/* Hamburger for small screens */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    right: 0;
+    top: 80px;
+    flex-direction: column;
+    background: rgba(0,0,0,0.9);
+    width: 200px;
+    height: auto;
+    display: none;
+  }
+  .nav-links li {
+    margin: 15px 0;
+    text-align: center;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+}
+
+/* Toggle hamburger X animation */
+.hamburger.toggle span:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+.hamburger.toggle span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.toggle span:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
