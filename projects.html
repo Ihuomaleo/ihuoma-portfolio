@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Projects | Ihuoma Obasi</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Ihuoma Obasi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;700&display=swap" rel="stylesheet">
+  <script src="script.js" defer></script>
 </head>
 <body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <header>
   <nav class="navbar">
     <div class="logo">Ihuoma's Portfolio</div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="CV.html">CV</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="index.html"><i class="fa-solid fa-house-user"></i>Home</a></li>
+      <li><a href="projects.html" class="active"><i class="fa-solid fa-folder-open"></i>Projects</a></li>
+      <li><a href="CV.html"><i class="fa-solid fa-file-lines"></i>CV</a></li>
+      <li><a href="contact.html"><i class="fa-solid fa-envelope"></i>Contact</a></li>
     </ul>
     <div class="hamburger">
       <span></span>
@@ -29,39 +32,263 @@
   </nav>
 </header>
 
+<main class="projects-page" id="main-content">
+  <div class="filter-bar">
+    <button class="active" data-filter="all">All</button>
+    <button data-filter="engineering">Engineering</button>
+    <button data-filter="graphic">Graphic</button>
+    <button data-filter="interior">Interior</button>
+    <div class="tag-filter">
+      <input type="text" id="tagInput" placeholder="Filter by tags (arduino, design, etc.)">
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <!-- Engineering Projects -->
+    <div class="card" data-category="engineering" data-tags="arduino sensors electronics">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <img src="images/engineering1.jpg" alt="Arduino temperature monitoring system" loading="lazy" style="display:none">
+      </div>
+      <div class="card-content">
+        <h3>Temperature Monitoring System</h3>
+        <p>Real-time ambient temperature monitor using sensors and Arduino.</p>
+        <div class="card-tags">
+          <span>Arduino</span>
+          <span>Sensors</span>
+          <span>Electronics</span>
+        </div>
+      </div>
+    </div>
     
+    <div class="card" data-category="engineering" data-tags="ir sensor automation lighting">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <img src="images/engineering2.jpg" alt="IR sensor automatic staircase lighting" loading="lazy" style="display:none">
+      </div>
+      <div class="card-content">
+        <h3>Automatic Staircase Lighting</h3>
+        <p>IR sensor-controlled lights activated by motion.</p>
+        <div class="card-tags">
+          <span>IR Sensor</span>
+          <span>Automation</span>
+          <span>Lighting</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" data-category="engineering" data-tags="sound electronics switching">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <img src="images/engineering3.jpg" alt="Sound-activated clap switch project" loading="lazy" style="display:none">
+      </div>
+      <div class="card-content">
+        <h3>Clap Switch</h3>
+        <p>Sound-activated switching system for basic appliances.</p>
+        <div class="card-tags">
+          <span>Sound</span>
+          <span>Electronics</span>
+          <span>Switching</span>
+        </div>
+      </div>
+    </div>
 
+    <!-- Graphic Designs -->
+    <div class="card" data-category="graphic" data-tags="poster marketing design">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <img src="images/design1.jpg" alt="Graphic design poster 1" loading="lazy" style="display:none">
+      </div>
+      <div class="card-content">
+        <h3>Marketing Poster</h3>
+        <p>Modern design for tech product launch</p>
+        <div class="card-tags">
+          <span>Poster</span>
+          <span>Marketing</span>
+          <span>Design</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" data-category="graphic" data-tags="flyer event university">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <img src="images/design2.jpg" alt="Graphic design poster 2" loading="lazy" style="display:none">
+      </div>
+      <div class="card-content">
+        <h3>Event Flyer</h3>
+        <p>Vibrant design for university event</p>
+        <div class="card-tags">
+          <span>Flyer</span>
+          <span>Event</span>
+          <span>University</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" data-category="graphic" data-tags="animation product showcase">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <video controls poster="videos/thumb1.jpg" style="display:none">
+          <source src="videos/edit1.mp4" type="video/mp4">
+          Your browser doesn't support videos
+        </video>
+      </div>
+      <div class="card-content">
+        <h3>Product Showcase</h3>
+        <p>Animated product introduction</p>
+        <div class="card-tags">
+          <span>Animation</span>
+          <span>Product</span>
+          <span>Showcase</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" data-category="graphic" data-tags="motion logo animation">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <video controls poster="videos/thumb2.jpg" style="display:none">
+          <source src="videos/edit2.mp4" type="video/mp4">
+          Your browser doesn't support videos
+        </video>
+      </div>
+      <div class="card-content">
+        <h3>Motion Graphics</h3>
+        <p>Logo animation sequence</p>
+        <div class="card-tags">
+          <span>Motion</span>
+          <span>Logo</span>
+          <span>Animation</span>
+        </div>
+      </div>
+    </div>
 
-<div id="sidebar" class="sidebar">
-  
-  
+    <!-- Interior Designs -->
+    <div class="card" data-category="interior" data-tags="living room modern cozy">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <img src="images/interior1.jpg" alt="Modern cozy living room design" loading="lazy" style="display:none">
+      </div>
+      <div class="card-content">
+        <h3>Modern Living Room</h3>
+        <p>Elegant and cozy living spaces.</p>
+        <div class="card-tags">
+          <span>Living Room</span>
+          <span>Modern</span>
+          <span>Cozy</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" data-category="interior" data-tags="office minimalist workspace">
+      <div class="media-container">
+        <div class="skeleton"></div>
+        <img src="images/interior2.jpg" alt="Minimalist office workspace design" loading="lazy" style="display:none">
+      </div>
+      <div class="card-content">
+        <h3>Office Workspace</h3>
+        <p>Minimalist, productive design.</p>
+        <div class="card-tags">
+          <span>Office</span>
+          <span>Minimalist</span>
+          <span>Workspace</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Project Modal -->
+<div id="projectModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div id="modalContent"></div>
+  </div>
 </div>
 
-<div id="sidebar" class="sidebar">
-  
-  
-</div>
+<footer>
+  <section class="footer-socials">
+    <a href="https://www.instagram.com/stacy_leo15" target="_blank" aria-label="Instagram">
+      <i class="fa-brands fa-instagram"></i><span>Instagram</span>
+    </a>
+    <a href="https://wa.me/2347059255765" target="_blank" aria-label="WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span>
+    </a>
+    <a href="https://www.linkedin.com/in/ihuoma-obasi" target="_blank" aria-label="LinkedIn">
+      <i class="fa-brands fa-linkedin"></i><span>LinkedIn</span>
+    </a>
+    <a href="https://github.com/Ihuomaleo" target="_blank" aria-label="GitHub">
+      <i class="fa-brands fa-github"></i><span>GitHub</span>
+    </a>
+    <a href="https://twitter.com/obasi_ihuo42473" target="_blank" aria-label="Twitter">
+      <i class="fa-brands fa-x-twitter"></i> <span>Twitter</span>
+    </a>
+  </section>
+  <p>&copy; 2025 Ihuoma Ngozika Obasi</p>
+</footer>
 
-    <main>
-        <section class="projects">
-            <h2>Engineering & Design Projects</h2>
-            <div class="project">
-                <h3>Temperature Monitoring System</h3>
-                <p>Real-time ambient temperature monitor using sensors and Arduino.</p>
-            </div>
-            <div class="project">
-                <h3>Automatic Staircase Lighting</h3>
-                <p>IR sensor-controlled lights activated by motion.</p>
-            </div>
-            <div class="project">
-                <h3>Clap Switch</h3>
-                <p>Sound-activated switching system for basic appliances.</p>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Ihuoma Ngozika Obasi</p>
-    </footer>
+<script>
+  // Project Modal Functionality
+  const modal = document.getElementById('projectModal');
+  const closeBtn = document.querySelector('.close-modal');
+  
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function() {
+      const title = this.querySelector('h3').textContent;
+      const description = this.querySelector('p').textContent;
+      const mediaElement = this.querySelector('img, video');
+      const tags = this.dataset.tags.split(' ');
+      const category = this.dataset.category;
+      
+      // Clone media element to preserve original
+      const mediaClone = mediaElement.cloneNode(true);
+      mediaClone.style.display = 'block';
+      mediaClone.removeAttribute('style');
+      
+      // Build tags HTML
+      let tagsHTML = '';
+      tags.forEach(tag => {
+        tagsHTML += `<span class="tag">${tag}</span>`;
+      });
+      
+      // Modal content
+      document.getElementById('modalContent').innerHTML = `
+        <h2>${title}</h2>
+        <div class="modal-media">
+          ${mediaClone.outerHTML}
+        </div>
+        <p>${description}</p>
+        <div class="project-details">
+          <p><strong>Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1)}</p>
+          <p><strong>Tags:</strong> <div class="modal-tags">${tagsHTML}</div></p>
+          <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+          <a href="#" class="btn no-transition">View Project Details</a>
+        </div>
+      `;
+      
+      modal.style.display = 'flex';
+    });
+  });
+  
+  closeBtn.addEventListener('click', () => modal.style.display = 'none');
+  window.addEventListener('click', e => e.target === modal && (modal.style.display = 'none'));
+  
+  // Page transition handler
+  document.querySelectorAll('a').forEach(link => {
+    if (link.href.startsWith(window.location.origin)) {
+      link.addEventListener('click', function(e) {
+        if (this.target !== '_blank' && !this.classList.contains('no-transition')) {
+          e.preventDefault();
+          document.body.style.animation = 'fadeOut 0.3s ease forwards';
+          
+          setTimeout(() => {
+            window.location.href = this.href;
+          }, 300);
+        }
+      });
+    }
+  });
+</script>
 </body>
-<script src="script.js"></script>
 </html>

@@ -4,32 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact | Ihuoma Obasi</title>
-
-  <!-- Font Awesome (for social icons) -->
-  <!--<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-5Q95I2QnP0tUq7zSJL6lTYTxlTbHE2wI10EUX7yZ5UzK4v0nhn9Sy+nDq1rFJPUvZEqd58R+q+w6Yx3Ek0C1Ug=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  /> -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Your main CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <header>
   <nav class="navbar">
     <div class="logo">Ihuoma's Portfolio</div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="CV.html">CV</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="index.html"><i class="fa-solid fa-house-user"></i>Home</a></li>
+      <li><a href="projects.html"><i class="fa-solid fa-folder-open"></i>Projects</a></li>
+      <li><a href="CV.html"><i class="fa-solid fa-file-lines"></i>CV</a></li>
+      <li><a href="contact.html" class="active"><i class="fa-solid fa-envelope"></i>Contact</a></li>
     </ul>
     <div class="hamburger">
       <span></span>
@@ -39,60 +31,110 @@
   </nav>
 </header>
 
-  
-
-
-<div id="sidebar" class="sidebar">
-  
-  
-</div>
-
-<div id="sidebar" class="sidebar">
-  
-  
-</div>
-
-
-  <main>
+  <main id="main-content">
     <section class="contact">
       <h2>Contact Me</h2>
       <form name="contact" method="POST" data-netlify="true" action="/thank-you.html">
         <input type="hidden" name="form-name" value="contact" />
+        <!-- Honeypot field -->
+        <input type="text" name="_gotcha" style="display:none">
         
         <label for="name">Your Name:</label>
-        <input type="text" id="name" name="name" required />
+        <input type="text" id="name" name="name" required placeholder="John Doe" />
 
         <label for="email">Your Email:</label>
-        <input type="email" id="email" name="email" required />
+        <input type="email" id="email" name="email" required placeholder="john@example.com" />
 
         <label for="message">Your Message:</label>
-        <textarea id="message" name="message" required></textarea>
+        <textarea id="message" name="message" required placeholder="Your message here..."></textarea>
 
-        <button type="submit">Send</button>
+        <button type="submit">Send Message</button>
       </form>
     </section>
   </main>
 
   <footer>
     <section class="footer-socials">
-      <a href="https://www.instagram.com/stacy_leo15" target="_blank">
+      <a href="https://www.instagram.com/stacy_leo15" target="_blank" aria-label="Instagram">
         <i class="fa-brands fa-instagram"></i><span>Instagram</span>
       </a>
-      <a href="https://wa.me/2347059255765" target="_blank">
+      <a href="https://wa.me/2347059255765" target="_blank" aria-label="WhatsApp">
         <i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span>
       </a>
-      <a href="https://www.linkedin.com/in/ihuoma-obasi" target="_blank">
+      <a href="https://www.linkedin.com/in/ihuoma-obasi" target="_blank" aria-label="LinkedIn">
         <i class="fa-brands fa-linkedin"></i><span>LinkedIn</span>
       </a>
-      <a href="https://github.com/Ihuomaleo" target="_blank">
+      <a href="https://github.com/Ihuomaleo" target="_blank" aria-label="GitHub">
         <i class="fa-brands fa-github"></i><span>GitHub</span>
       </a>
-      <a href="https://twitter.com/obasi_ihuo42473" target="_blank">
+      <a href="https://twitter.com/obasi_ihuo42473" target="_blank" aria-label="Twitter">
         <i class="fa-brands fa-x-twitter"></i> <span>Twitter</span>
       </a>
     </section>
     <p>&copy; 2025 Ihuoma Ngozika Obasi</p>
   </footer>
+  
+  <script>
+    // Form auto-save
+    const form = document.querySelector('form');
+    const formFields = ['name', 'email', 'message'];
+    
+    // Load saved data
+    formFields.forEach(field => {
+      const savedValue = localStorage.getItem(`contact-${field}`);
+      if (savedValue) {
+        document.getElementById(field).value = savedValue;
+      }
+    });
+    
+    // Save on input
+    formFields.forEach(field => {
+      document.getElementById(field).addEventListener('input', function() {
+        localStorage.setItem(`contact-${field}`, this.value);
+      });
+    });
+    
+    // Clear on successful submit
+    form.addEventListener('submit', function() {
+      formFields.forEach(field => {
+        localStorage.removeItem(`contact-${field}`);
+      });
+    });
+    
+    // Form validation
+    document.querySelector('form').addEventListener('submit', (e) => {
+      const email = document.getElementById('email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      if (!emailRegex.test(email)) {
+        e.preventDefault();
+        alert('Please enter a valid email address');
+        document.getElementById('email').focus();
+        return false;
+      }
+      
+      // Show submitting state
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      submitBtn.disabled = true;
+    });
+    
+    // Page transition handler
+    document.querySelectorAll('a').forEach(link => {
+      if (link.href.startsWith(window.location.origin)) {
+        link.addEventListener('click', function(e) {
+          if (this.target !== '_blank' && !this.classList.contains('no-transition')) {
+            e.preventDefault();
+            document.body.style.animation = 'fadeOut 0.3s ease forwards';
+            
+            setTimeout(() => {
+              window.location.href = this.href;
+            }, 300);
+          }
+        });
+      }
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
