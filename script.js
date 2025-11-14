@@ -95,63 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
-
-// Lazy loading for images
-document.addEventListener("DOMContentLoaded", function() {
-  const lazyImages = [].slice.call(document.querySelectorAll("img[loading='lazy']"));
-  
-  if ("IntersectionObserver" in window) {
-    const lazyImageObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          const lazyImage = entry.target;
-          lazyImage.src = lazyImage.dataset.src;
-          lazyImage.classList.remove("lazy");
-          lazyImageObserver.unobserve(lazyImage);
-        }
-      });
-    }, {
-      rootMargin: '200px 0px',
-      threshold: 0.01
-    });
-
-    lazyImages.forEach(function(lazyImage) {
-      lazyImageObserver.observe(lazyImage);
-    });
-  }
-});
-
-// Project filter functionality
-document.addEventListener('DOMContentLoaded', function() {
-  if (document.querySelector('.projects-page')) {
-    const filterButtons = document.querySelectorAll('.filter-bar button');
-    const projectCards = document.querySelectorAll('.card');
-    const tagInput = document.getElementById('tagInput');
-    
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        // Update active button
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        
-        const filterValue = button.dataset.filter;
-        
-        // Filter projects
-        projectCards.forEach(card => {
-          if (filterValue === 'all' || card.dataset.category === filterValue) {
-            card.style.display = 'block';
-            setTimeout(() => {
-              card.style.opacity = '1';
-            }, 50);
-          } else {
-            card.style.opacity = '0';
-            setTimeout(() => {
-              card.style.display = 'none';
-            }, 300);
-          }
-        });
-      });
-    });
     
     // Tag filtering
     if (tagInput) {

@@ -14,18 +14,17 @@ media_library:
 collections:
   - name: "projects" # The name of the collection
     label: "Projects" # The name that shows up in the CMS UI
-    folder: "_projects" # Store project data in a NEW folder called "_projects"
-    create: true # Allow creating new projects
-    slug: "{{slug}}" # Use the title to create the filename
-    extension: "json" # Save each project as a JSON file
+    label_singular: "Project"
+    file: "_data/projects.json" # Store ALL projects in this single file
     format: "json" # Use JSON format
-    
-    # These are the fields for each project
+    widget: "list" # This means it's a list of items
+
+    # These are the fields for each project in the list
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Category", name: "category", widget: "select", options: ["engineering", "graphic", "interior"] }
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Project Image (for photos)", name: "image", widget: "image", required: false }
-      - { label: "Project Video (for videos)", name: "video_mp4", widget: "file", required: false }
-      - { label: "Video Thumbnail", name: "video_poster", widget: "image", required: false }
+      - { label: "Project Video (for videos, e.g., 'videos/my-video.mp4')", name: "video_mp4", widget: "string", required: false }
+      - { label: "Video Thumbnail (e.g., 'videos/my-thumb.jpg')", name: "video_poster", widget: "string", required: false }
       - { label: "Tags (for filtering)", name: "tags", widget: "list", field: { label: "Tag", name: "tag", widget: "string" } }
