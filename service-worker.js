@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ihuoma-portfolio-v1';
+const CACHE_NAME = 'ihuoma-portfolio-v2';
 const urlsToCache = [
   '/',
   '/index.html',

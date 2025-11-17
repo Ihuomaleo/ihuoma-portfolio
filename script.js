@@ -96,58 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
     
-    // Tag filtering
-    if (tagInput) {
-      tagInput.addEventListener('input', function() {
-        const searchTerm = this.value.trim().toLowerCase();
-        
-        projectCards.forEach(card => {
-          const tags = card.dataset.tags.toLowerCase();
-          if (searchTerm === '' || tags.includes(searchTerm)) {
-            card.style.display = 'block';
-            setTimeout(() => {
-              card.style.opacity = '1';
-            }, 50);
-          } else {
-            card.style.opacity = '0';
-            setTimeout(() => {
-              card.style.display = 'none';
-            }, 300);
-          }
-        });
-      });
-    }
-    
-    // Card animations
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    projectCards.forEach(card => {
-      observer.observe(card);
-    });
-    
-    // Image loading handler
-    document.querySelectorAll('.card img, .card video').forEach(media => {
-      media.onload = media.onloadeddata = function() {
-        const card = this.closest('.card');
-        card.classList.add('loaded');
-        if (card.querySelector('.skeleton')) {
-          card.querySelector('.skeleton').style.display = 'none';
-        }
-        card.querySelectorAll('.skeleton-text').forEach(el => el.remove());
-      };
-      
-      // Trigger loading for cached images
-      if (media.complete) media.onload();
-    });
-  }
-});
-
 // Register service worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
