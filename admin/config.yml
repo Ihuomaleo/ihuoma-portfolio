@@ -1,25 +1,27 @@
 # This is the backend configuration.
 backend:
-  name: git-gateway # Use Netlify's Git Gateway for authentication
-  branch: main # Or "master", depending on your GitHub repository's default branch
+  name: git-gateway
+  branch: main # CHANGE THIS to 'master' if your main GitHub branch is named 'master'
 
 # This tells the CMS where to store the media files (images/videos)
-media_folder: "images" # Store all uploaded images in the "images" folder
-public_folder: "/images" # The public-facing path to the "images" folder
+media_folder: "images"
+public_folder: "/images"
 media_library:
   config:
-    multiple: true # Allow multiple file uploads at once
+    multiple: true
 
 # This defines the content you want to manage.
 collections:
-  - name: "projects" # The name of the collection
-    label: "Projects" # The name that shows up in the CMS UI
+  - name: "projects"
+    label: "Projects"
     label_singular: "Project"
-    file: "_data/projects.json" # Store ALL projects in this single file
-    format: "json" # Use JSON format
-    widget: "list" # This means it's a list of items
-
-    # These are the fields for each project in the list
+    folder: "_projects"         # <--- NEW: Saves projects as individual files here
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    
+    # These are the fields for each project (will create a new file for each)
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Category", name: "category", widget: "select", options: ["engineering", "graphic", "interior"] }
