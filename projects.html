@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;700&display=swap" rel="stylesheet">
-  </head>
+</head>
 <body>
 
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -49,9 +49,9 @@
   </div>
 </main>
 
-<div id="projectModal" class="modal">
+<div id="projectModal" class="modal" aria-hidden="true">
   <div class="modal-content">
-    <span class="close-modal">&times;</span>
+    <button class="close-modal" aria-label="Close modal">&times;</button>
     <div id="modalContent"></div>
   </div>
 </div>
@@ -81,26 +81,35 @@
 document.addEventListener('DOMContentLoaded', function() {
   const grid = document.querySelector('.grid-container');
 
+  // Helper: Resolve image paths to the images/ folder if user provided a filename only
+  function resolveMediaPath(src) {
+    if (!src) return '';
+    // If it's already an absolute path or external URL, use it directly
+    if (src.startsWith('/') || src.startsWith('http')) return src;
+    // Otherwise assume it's inside your project's images/ folder (you chose A)
+    return 'images/' + src;
+  }
+
   // Function to build the HTML for a single project card
   function createProjectCard(project) {
     const category = project.category || 'general';
-    const tags = project.tags || [];
+    const tags = Array.isArray(project.tags) ? project.tags : [];
     const tagsString = tags.join(' ').toLowerCase();
     const tagsHTML = tags.map(tag => `<span>${tag}</span>`).join('');
 
     let mediaHTML = '';
     if (project.video_mp4) {
-      // It's a video project
-      const poster = project.video_poster || '';
+      const poster = project.video_poster ? resolveMediaPath(project.video_poster) : '';
+      const videoSrc = resolveMediaPath(project.video_mp4);
       mediaHTML = `
-        <video controls poster="${poster}" style="display:none">
-          <source src="${project.video_mp4}" type="video/mp4">
+        <video controls preload="metadata" poster="${poster}" style="display:none">
+          <source src="${videoSrc}" type="video/mp4">
           Your browser doesn't support videos
         </video>
       `;
     } else if (project.image) {
-      // It's an image project
-      mediaHTML = `<img src="${project.image}" alt="${project.title}" loading="lazy" style="display:none">`;
+      const imageSrc = resolveMediaPath(project.image);
+      mediaHTML = `<img src="${imageSrc}" alt="${project.title || 'Project image'}" loading="lazy" style="display:none">`;
     }
 
     return `
@@ -123,42 +132,46 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to load and display all projects
   async function loadProjects() {
     try {
-      const response = await fetch('/_data/projects.json');
+      // NOTE: this JSON should be the file managed by the CMS: src/data/projects.json
+      const response = await fetch('src/data/projects.json', {cache: "no-store"});
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        // If 404 or other, show friendly message
+        throw new Error('Network response was not ok: ' + response.status);
       }
-      const projects = await response.json();
-      
-      if (projects && projects.length > 0) {
+      const json = await response.json();
+      const projects = Array.isArray(json.projects) ? json.projects : [];
+
+      if (projects.length > 0) {
+        // Create the HTML string and insert once (faster)
         grid.innerHTML = projects.map(createProjectCard).join('');
       } else {
         grid.innerHTML = "<p>No projects found. Try adding some in the CMS!</p>";
       }
-      
-      // NOW that projects are loaded, run all the project-specific JS
+
+      // Now that the DOM has the cards, initialize interactivity
       initializeProjectScripts();
-      
+
     } catch (error) {
       console.error('Failed to load projects:', error);
-      grid.innerHTML = "<p>Error loading projects. Please check the console.</p>";
+      grid.innerHTML = "<p>Error loading projects. Please check the console for details.</p>";
     }
   }
 
   // This function contains all the logic that needs to run AFTER projects are on the page
   function initializeProjectScripts() {
-    
-    // 1. Project Filter Functionality (from script.js)
-    if (document.querySelector('.projects-page')) {
-      const filterButtons = document.querySelectorAll('.filter-bar button');
-      const projectCards = document.querySelectorAll('.card');
-      const tagInput = document.getElementById('tagInput');
-      
+    // Project elements (now present in DOM)
+    const filterButtons = document.querySelectorAll('.filter-bar button');
+    const projectCards = document.querySelectorAll('.card');
+    const tagInput = document.getElementById('tagInput');
+
+    // Filter button behavior
+    if (filterButtons && projectCards) {
       filterButtons.forEach(button => {
         button.addEventListener('click', () => {
           filterButtons.forEach(btn => btn.classList.remove('active'));
           button.classList.add('active');
           const filterValue = button.dataset.filter;
-          
+
           projectCards.forEach(card => {
             if (filterValue === 'all' || card.dataset.category === filterValue) {
               card.style.display = 'block';
@@ -170,68 +183,100 @@ document.addEventListener('DOMContentLoaded', function() {
           });
         });
       });
-      
-      if (tagInput) {
-        tagInput.addEventListener('input', function() {
-          const searchTerm = this.value.trim().toLowerCase();
-          projectCards.forEach(card => {
-            const tags = card.dataset.tags.toLowerCase();
-            if (searchTerm === '' || tags.includes(searchTerm)) {
-              card.style.display = 'block';
-              setTimeout(() => card.style.opacity = '1', 50);
-            } else {
-              card.style.opacity = '0';
-              setTimeout(() => card.style.display = 'none', 300);
-            }
-          });
-        });
-      }
-      
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('show');
+    }
+
+    // Tag input filtering
+    if (tagInput) {
+      tagInput.addEventListener('input', function() {
+        const searchTerm = this.value.trim().toLowerCase();
+        projectCards.forEach(card => {
+          const tags = (card.dataset.tags || '').toLowerCase();
+          if (searchTerm === '' || tags.includes(searchTerm)) {
+            card.style.display = 'block';
+            setTimeout(() => card.style.opacity = '1', 50);
+          } else {
+            card.style.opacity = '0';
+            setTimeout(() => card.style.display = 'none', 300);
           }
         });
-      }, { threshold: 0.1 });
-      projectCards.forEach(card => observer.observe(card));
-      
-      document.querySelectorAll('.card img, .card video').forEach(media => {
-        media.onload = media.onloadeddata = function() {
-          const card = this.closest('.card');
-          card.classList.add('loaded');
-          if (card.querySelector('.skeleton')) {
-            card.querySelector('.skeleton').style.display = 'none';
-          }
-          card.querySelectorAll('.skeleton-text').forEach(el => el.remove());
-        };
-        if (media.complete) media.onload();
       });
     }
 
-    // 2. Project Modal Functionality (from projects.html)
+    // IntersectionObserver for reveal animations
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    projectCards.forEach(card => {
+      observer.observe(card);
+    });
+
+    // Media loading handling: images and videos
+    const medias = document.querySelectorAll('.card img, .card video');
+    medias.forEach(media => {
+      // for images
+      if (media.tagName.toLowerCase() === 'img') {
+        media.addEventListener('load', function() {
+          const card = this.closest('.card');
+          card.classList.add('loaded');
+          const sk = card.querySelector('.skeleton');
+          if (sk) sk.style.display = 'none';
+        });
+        // if already cached/complete
+        if (media.complete && media.naturalWidth !== 0) {
+          media.dispatchEvent(new Event('load'));
+          media.style.display = 'block';
+        } else {
+          // make it visible once it loads (the load handler will show card)
+          media.addEventListener('load', () => media.style.display = 'block');
+        }
+      }
+
+      // for videos
+      if (media.tagName.toLowerCase() === 'video') {
+        media.addEventListener('loadeddata', function() {
+          const card = this.closest('.card');
+          card.classList.add('loaded');
+          const sk = card.querySelector('.skeleton');
+          if (sk) sk.style.display = 'none';
+          this.style.display = 'block';
+        });
+        // try to show poster immediately; source will load progressively
+        if (media.readyState >= 2) {
+          media.dispatchEvent(new Event('loadeddata'));
+        } else {
+          media.addEventListener('loadeddata', () => media.style.display = 'block');
+        }
+      }
+    });
+
+    // Project Modal Functionality
     const modal = document.getElementById('projectModal');
     const closeBtn = document.querySelector('.close-modal');
-    
+
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('click', function() {
-        const title = this.querySelector('h3').textContent;
-        const description = this.querySelector('p').textContent;
+        const title = this.querySelector('h3') ? this.querySelector('h3').textContent : '';
+        const description = this.querySelector('p') ? this.querySelector('p').textContent : '';
         const mediaElement = this.querySelector('img, video');
-        const tags = (this.dataset.tags || '').split(' ');
+        const tags = (this.dataset.tags || '').split(' ').filter(Boolean);
         const category = this.dataset.category || 'N/A';
-        
+
         const mediaClone = mediaElement ? mediaElement.cloneNode(true) : null;
         if (mediaClone) {
           mediaClone.style.display = 'block';
-          mediaClone.removeAttribute('style');
+          mediaClone.removeAttribute('style'); // ensure it shows in modal
         }
-        
+
         let tagsHTML = '';
         tags.forEach(tag => {
           if (tag) tagsHTML += `<span class="tag">${tag}</span>`;
         });
-        
+
         document.getElementById('modalContent').innerHTML = `
           <h2>${title}</h2>
           <div class="modal-media">
@@ -244,15 +289,26 @@ document.addEventListener('DOMContentLoaded', function() {
             <a href="#" class="btn no-transition">View Project Details</a>
           </div>
         `;
-        
+
         modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
       });
     });
-    
+
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => modal.style.display = 'none');
+      closeBtn.addEventListener('click', () => {
+        const modal = document.getElementById('projectModal');
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      });
     }
-    window.addEventListener('click', e => e.target === modal && (modal.style.display = 'none'));
+    window.addEventListener('click', e => {
+      const modalEl = document.getElementById('projectModal');
+      if (e.target === modalEl) {
+        modalEl.style.display = 'none';
+        modalEl.setAttribute('aria-hidden', 'true');
+      }
+    });
   }
 
   // Start loading projects
@@ -260,16 +316,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Page transition handler (this is fine to leave here)
   document.querySelectorAll('a').forEach(link => {
-    if (link.href.startsWith(window.location.origin)) {
-      link.addEventListener('click', function(e) {
-        if (this.target !== '_blank' && !this.classList.contains('no-transition')) {
-          e.preventDefault();
-          document.body.style.animation = 'fadeOut 0.3s ease forwards';
-          setTimeout(() => {
-            window.location.href = this.href;
-          }, 300);
-        }
-      });
+    // Only intercept internal links
+    try {
+      if (link.href && link.href.startsWith(window.location.origin)) {
+        link.addEventListener('click', function(e) {
+          if (this.target !== '_blank' && !this.classList.contains('no-transition')) {
+            e.preventDefault();
+            document.body.style.animation = 'fadeOut 0.3s ease forwards';
+            setTimeout(() => {
+              window.location.href = this.href;
+            }, 300);
+          }
+        });
+      }
+    } catch (err) {
+      // some anchors may not have href or be mailto/# — ignore
     }
   });
 });

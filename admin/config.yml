@@ -1,32 +1,20 @@
-# This is the backend configuration.
 backend:
   name: git-gateway
-  branch: main # CHANGE THIS to 'master' if your main GitHub branch is named 'master'
+  branch: main
 
-# This tells the CMS where to store the media files (images/videos)
-media_folder: "images"
-public_folder: "/images"
-media_library:
-  config:
-    multiple: true
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
-# This defines the content you want to manage.
 collections:
   - name: "projects"
     label: "Projects"
-    label_singular: "Project"
-    folder: "_projects"         # <--- NEW: Saves projects as individual files here
-    create: true
-    slug: "{{slug}}"
-    extension: "json"
-    format: "json"
-    
-    # These are the fields for each project (will create a new file for each)
+    file: "src/data/projects.json"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Category", name: "category", widget: "select", options: ["engineering", "graphic", "interior"] }
-      - { label: "Description", name: "description", widget: "string" }
-      - { label: "Project Image (for photos)", name: "image", widget: "image", required: false }
-      - { label: "Project Video (e.g., 'videos/my-video.mp4')", name: "video_mp4", widget: "string", required: false }
-      - { label: "Video Thumbnail (e.g., 'videos/my-thumb.jpg')", name: "video_poster", widget: "string", required: false }
-      - { label: "Tags (for filtering)", name: "tags", widget: "list", field: { label: "Tag", name: "tag", widget: "string" } }
+      - label: "Projects"
+        name: "projects"
+        widget: "list"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "URL", name: "url", widget: "string" }
