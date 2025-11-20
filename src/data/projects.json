@@ -1,13 +1,3 @@
 {
-  "projects": [
-    {
-      "title": "Demo Project",
-      "description": "This is a demo project to test the CMS.",
-      "image": "demo.png",
-      "category": "engineering",
-      "tags": ["arduino", "sensor"],
-      "video_mp4": "",
-      "video_poster": ""
-    }
-  ]
+  "projects": []
 }
